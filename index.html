@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>點將家生態園區 - 旅遊行程</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            font-family: 'ZCOOL+KuaiLe', 'Microsoft JhengHei', sans-serif;
+            background: #fdfcf0;
+            color: #4a4a4a;
+            overflow-x: hidden;
+        }
+        .comic-border {
+            border: 4px solid #000;
+            box-shadow: 6px 6px 0px #000;
+        }
+        .comic-bg {
+            background-image: radial-gradient(#ffe66d 2px, transparent 2px);
+            background-size: 30px 30px;
+        }
+        .btn-comic {
+            transition: all 0.2s;
+            border: 3px solid #000;
+            box-shadow: 4px 4px 0px #000;
+        }
+        .btn-comic:active {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px #000;
+        }
+        .page-transition {
+            display: none;
+        }
+        .page-active {
+            display: block;
+            animation: fadeIn 0.4s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        #toast {
+            transition: opacity 0.3s, transform 0.3s;
+            transform: translateY(100px);
+        }
+        #toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="comic-bg min-h-screen">
+
+    <!-- 通知氣泡 -->
+    <div id="toast" class="fixed bottom-24 left-1/2 -translate-x-1/2 z-[100] bg-black text-white px-6 py-3 rounded-full comic-border opacity-0 pointer-events-none font-bold">
+        紀錄已更新！
+    </div>
+
+    <!-- 自定義確認視窗 -->
+    <div id="confirm-modal" class="fixed inset-0 z-[110] bg-black/50 hidden items-center justify-center p-6">
+        <div class="bg-white p-6 comic-border max-w-xs w-full text-center">
+            <p class="text-xl font-bold mb-6">確定要刪除這筆紀錄嗎？</p>
+            <div class="flex gap-4">
+                <button onclick="closeConfirm()" class="flex-1 btn-comic bg-gray-200 py-2 rounded font-bold">取消</button>
+                <button id="modal-confirm-btn" class="flex-1 btn-comic bg-red-500 text-white py-2 rounded font-bold">刪除</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 首頁 -->
+    <div id="home-page" class="page-transition page-active p-6 max-w-md mx-auto">
+        <div class="text-center mt-10 mb-12">
+            <h1 class="text-5xl font-bold mb-4 bg-white inline-block px-4 py-2 comic-border transform -rotate-2">
+                點將家
+            </h1>
+            <br>
+            <h2 class="text-3xl font-bold bg-green-400 inline-block px-4 py-1 comic-border transform rotate-2">
+                生態園區之旅
+            </h2>
+        </div>
+
+        <div class="flex flex-col gap-6">
+            <button onclick="showPage('info-page')" class="btn-comic bg-blue-400 text-white text-2xl py-4 rounded-xl font-bold flex items-center justify-center gap-2">
+                <i data-lucide="info"></i> 注意事項
+            </button>
+            <button onclick="showPage('meal-page')" class="btn-comic bg-orange-400 text-white text-2xl py-4 rounded-xl font-bold flex items-center justify-center gap-2">
+                <i data-lucide="utensils"></i> 餐時表
+            </button>
+            <button onclick="showPage('calc-page')" class="btn-comic bg-pink-400 text-white text-2xl py-4 rounded-xl font-bold flex items-center justify-center gap-2">
+                <i data-lucide="calculator"></i> 費用計算機
+            </button>
+        </div>
+        
+        <div class="mt-12 text-center">
+            <div class="bg-white p-4 comic-border inline-block rotate-1">
+                <p class="text-lg italic">準備好享受大自然了嗎？</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 注意事項頁面 -->
+    <div id="info-page" class="page-transition p-6 max-w-md mx-auto">
+        <button onclick="showPage('home-page')" class="mb-6 btn-comic bg-gray-200 px-4 py-2 rounded-lg font-bold">← 返回首頁</button>
+        
+        <h2 class="text-3xl font-bold mb-6 border-b-4 border-black pb-2">注意事項</h2>
+        
+        <div class="space-y-8">
+            <div class="bg-white p-5 comic-border">
+                <h3 class="text-xl font-bold text-blue-600 mb-2">1. 集合時間與地點</h3>
+                <p class="mb-4">2/18 下午三點<br>烏日全聯中山店</p>
+                <a href="https://maps.app.goo.gl/5mM8FsZ3PcT1nASp9" target="_blank" class="btn-comic bg-green-500 text-white px-4 py-2 rounded-lg inline-flex items-center gap-2">
+                    <i data-lucide="map-pin"></i> 開啟 Google Map
+                </a>
+            </div>
+
+            <div class="bg-white p-5 comic-border">
+                <h3 class="text-xl font-bold text-orange-600 mb-2">2. 導航路線說明</h3>
+                <p class="mb-4">請先導航到：<br><strong>南投縣北山派出所</strong></p>
+                <a href="https://maps.app.goo.gl/tKrDuac1JNw5jU7Q9" target="_blank" class="btn-comic bg-green-500 text-white px-4 py-2 rounded-lg inline-flex items-center gap-2 mb-4">
+                    <i data-lucide="navigation"></i> 導航至北山派出所
+                </a>
+                <p class="my-4 text-sm bg-yellow-100 p-2 border-l-4 border-yellow-500">抵達後再導航至「點將家生態園區」</p>
+                
+                <p class="font-bold mb-2">附上路線圖參考：</p>
+                <img src="https://scontent-tpe1-1.xx.fbcdn.net/v/t51.82787-15/557753639_17860245393503293_636168550447686775_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=127cfc&_nc_ohc=QjauHf1m2CAQ7kNvwHE12Mn&_nc_oc=Adl7lrmCjeOWA5JBtkC5WJcm2rK0iKhsBOu11I2HMp3aegEieFrB3CBQavNyc9ouVSw&_nc_zt=23&_nc_ht=scontent-tpe1-1.xx&_nc_gid=yy9wyldgD9yVeqT_Dhi6kw&oh=00_AfpS8_JQe9Ll2-elBARWdfq6mzdCHV42qpttDMoIgHYtAQ&oe=6976A1FD" 
+                     alt="路線圖" 
+                     class="w-full comic-border"
+                     onerror="this.src='https://via.placeholder.com/400x300?text=路線圖加載失敗';">
+            </div>
+        </div>
+    </div>
+
+    <!-- 餐時表頁面 -->
+    <div id="meal-page" class="page-transition p-6 max-w-md mx-auto">
+        <button onclick="showPage('home-page')" class="mb-6 btn-comic bg-gray-200 px-4 py-2 rounded-lg font-bold">← 返回首頁</button>
+        <h2 class="text-3xl font-bold mb-6 border-b-4 border-black pb-2">餐時表</h2>
+        
+        <div class="bg-white comic-border overflow-hidden">
+            <table class="w-full text-left">
+                <thead class="bg-orange-200 border-b-4 border-black">
+                    <tr>
+                        <th class="p-3 border-r-2 border-black">時間</th>
+                        <th class="p-3">內容</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y-2 divide-gray-200">
+                    <tr><td class="p-3 font-bold border-r-2 border-black">2/18 晚餐</td><td class="p-3">火鍋、秘制豬肋排</td></tr>
+                    <tr><td class="p-3 font-bold border-r-2 border-black">2/19 早餐</td><td class="p-3">無敵蘿蔔糕，洪瑞珍三明治</td></tr>
+                    <tr><td class="p-3 font-bold border-r-2 border-black">2/19 午餐</td><td class="p-3">香腸炒飯</td></tr>
+                    <tr><td class="p-3 font-bold border-r-2 border-black">2/19 晚餐</td><td class="p-3">烤肉</td></tr>
+                    <tr><td class="p-3 font-bold border-r-2 border-black">2/20 早餐</td><td class="p-3">史丹漢堡</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- 費用計算機頁面 -->
+    <div id="calc-page" class="page-transition p-6 max-w-md mx-auto pb-24">
+        <button onclick="showPage('home-page')" class="mb-6 btn-comic bg-gray-200 px-4 py-2 rounded-lg font-bold">← 返回首頁</button>
+        <h2 class="text-3xl font-bold mb-6 border-b-4 border-black pb-2">費用計算機</h2>
+
+        <div class="bg-white p-5 comic-border space-y-4 mb-6">
+            <div>
+                <label class="block font-bold mb-1">人員選擇</label>
+                <select id="calc-name" class="w-full p-2 border-2 border-black rounded-lg">
+                    <option value="永樂">永樂</option>
+                    <option value="佳秀">佳秀</option>
+                    <option value="史丹">史丹</option>
+                    <option value="珊迪">珊迪</option>
+                    <option value="漢輝">漢輝</option>
+                    <option value="君華">君華</option>
+                    <option value="文毓">文毓</option>
+                </select>
+            </div>
+            <div>
+                <label class="block font-bold mb-1">支出項目</label>
+                <input type="text" id="calc-item" placeholder="例如：營地費、晚餐..." class="w-full p-2 border-2 border-black rounded-lg">
+            </div>
+            <div>
+                <label class="block font-bold mb-1">支出金額</label>
+                <input type="number" id="calc-amount" placeholder="輸入金額" class="w-full p-2 border-2 border-black rounded-lg">
+            </div>
+            <button onclick="saveRecord()" class="w-full btn-comic bg-pink-500 text-white font-bold py-3 rounded-lg flex items-center justify-center gap-2">
+                <i data-lucide="save"></i> 儲存紀錄
+            </button>
+        </div>
+
+        <button onclick="showLedger()" class="fixed bottom-6 right-6 btn-comic bg-yellow-400 p-4 rounded-full flex items-center gap-2 font-bold z-50">
+            <i data-lucide="book-open"></i> 查看帳本
+        </button>
+    </div>
+
+    <!-- 帳本與結算頁面 -->
+    <div id="ledger-page" class="page-transition p-6 max-w-md mx-auto pb-32">
+        <h2 class="text-3xl font-bold mb-6 border-b-4 border-black pb-2">帳本紀錄</h2>
+        
+        <div id="records-list" class="space-y-3 mb-8">
+            <!-- 紀錄顯示處 -->
+        </div>
+
+        <div id="settlement-result" class="hidden bg-green-100 p-4 comic-border mb-8">
+            <h3 class="font-bold text-xl mb-3">💰 結算結果</h3>
+            <div id="total-info" class="mb-4 pb-2 border-b-2 border-green-300 font-bold"></div>
+            <div id="split-details" class="space-y-2"></div>
+        </div>
+
+        <div class="fixed bottom-0 left-0 right-0 p-4 bg-white border-t-4 border-black flex gap-4">
+            <button onclick="showPage('calc-page')" class="flex-1 btn-comic bg-gray-200 py-3 rounded-lg font-bold">返回計算機</button>
+            <button onclick="calculateSettlement()" class="flex-1 btn-comic bg-green-500 text-white py-3 rounded-lg font-bold">結算帳單</button>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        function showPage(pageId) {
+            document.querySelectorAll('.page-transition').forEach(p => p.classList.remove('page-active'));
+            document.getElementById(pageId).classList.add('page-active');
+            window.scrollTo(0,0);
+        }
+
+        const members = ["永樂", "佳秀", "史丹", "珊迪", "漢輝", "君華", "文毓"];
+        let records = JSON.parse(localStorage.getItem('tripRecords')) || [];
+        let deleteIdTarget = null;
+
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.innerText = msg;
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 2000);
+        }
+
+        function saveRecord() {
+            const name = document.getElementById('calc-name').value;
+            const item = document.getElementById('calc-item').value;
+            const amountInput = document.getElementById('calc-amount');
+            const amount = parseFloat(amountInput.value);
+
+            if (!item || isNaN(amount)) {
+                showToast("請填寫項目與金額！");
+                return;
+            }
+
+            const newRecord = { id: Date.now(), name, item, amount };
+            records.push(newRecord);
+            localStorage.setItem('tripRecords', JSON.stringify(records));
+            
+            document.getElementById('calc-item').value = '';
+            amountInput.value = '';
+            showToast(`已幫 ${name} 儲存！`);
+        }
+
+        function showLedger() {
+            renderRecords();
+            document.getElementById('settlement-result').classList.add('hidden');
+            showPage('ledger-page');
+        }
+
+        function renderRecords() {
+            const list = document.getElementById('records-list');
+            if (records.length === 0) {
+                list.innerHTML = '<div class="text-center py-10 text-gray-400">目前還沒有任何紀錄喔</div>';
+                return;
+            }
+
+            list.innerHTML = records.map(r => `
+                <div class="bg-white p-3 comic-border flex justify-between items-center">
+                    <div>
+                        <span class="font-bold text-pink-600">[${r.name}]</span> 
+                        <span class="ml-2">${r.item}</span>
+                        <div class="text-lg font-bold">$${r.amount}</div>
+                    </div>
+                    <button onclick="openConfirm(${r.id})" class="text-red-500 p-2 hover:bg-red-50 rounded">
+                        <i data-lucide="trash-2"></i>
+                    </button>
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        function openConfirm(id) {
+            deleteIdTarget = id;
+            const modal = document.getElementById('confirm-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            
+            document.getElementById('modal-confirm-btn').onclick = function() {
+                executeDelete();
+            };
+        }
+
+        function closeConfirm() {
+            const modal = document.getElementById('confirm-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            deleteIdTarget = null;
+        }
+
+        function executeDelete() {
+            if (deleteIdTarget) {
+                records = records.filter(r => r.id !== deleteIdTarget);
+                localStorage.setItem('tripRecords', JSON.stringify(records));
+                renderRecords();
+                showToast("已成功刪除！");
+            }
+            closeConfirm();
+        }
+
+        function calculateSettlement() {
+            if (records.length === 0) {
+                showToast("沒有紀錄可結算！");
+                return;
+            }
+
+            const total = records.reduce((sum, r) => sum + r.amount, 0);
+            const avg = total / members.length;
+            
+            const paidBy = {};
+            members.forEach(m => paidBy[m] = 0);
+            records.forEach(r => paidBy[r.name] += r.amount);
+
+            let balances = members.map(m => ({
+                name: m,
+                balance: paidBy[m] - avg
+            }));
+
+            let debtors = balances.filter(b => b.balance < -0.1).sort((a, b) => a.balance - b.balance);
+            let creditors = balances.filter(b => b.balance > 0.1).sort((a, b) => b.balance - a.balance);
+
+            const resultDiv = document.getElementById('split-details');
+            document.getElementById('total-info').innerHTML = `
+                總支出：$${total.toFixed(0)} <br>
+                每人應付：$${avg.toFixed(0)}
+            `;
+
+            let transactions = [];
+            let dIdx = 0;
+            let cIdx = 0;
+
+            let tempDebtors = debtors.map(d => ({...d}));
+            let tempCreditors = creditors.map(c => ({...c}));
+
+            while (dIdx < tempDebtors.length && cIdx < tempCreditors.length) {
+                let debt = Math.abs(tempDebtors[dIdx].balance);
+                let credit = tempCreditors[cIdx].balance;
+                let transfer = Math.min(debt, credit);
+
+                transactions.push(`<strong>${tempDebtors[dIdx].name}</strong> 給 <strong>${tempCreditors[cIdx].name}</strong> $${transfer.toFixed(0)}`);
+
+                tempDebtors[dIdx].balance += transfer;
+                tempCreditors[cIdx].balance -= transfer;
+
+                if (Math.abs(tempDebtors[dIdx].balance) < 0.1) dIdx++;
+                if (Math.abs(tempCreditors[cIdx].balance) < 0.1) cIdx++;
+            }
+
+            if (transactions.length === 0) {
+                resultDiv.innerHTML = '<p class="text-center italic text-green-700">大家付的一樣多，剛好平衡！</p>';
+            } else {
+                resultDiv.innerHTML = transactions.map(t => `<div class="p-3 bg-white border-2 border-black rounded shadow-sm">${t}</div>`).join('');
+            }
+
+            document.getElementById('settlement-result').classList.remove('hidden');
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
